@@ -30,3 +30,5 @@ body{position:relative;background:linear-gradient(180deg,#fff 0%,#fbfdff 32%,#ff
 @media(max-width:800px){.motion-ready .how-card:nth-child(2).is-in:hover{transform:translateY(-8px)}.detail-hero::after{display:none}}
 .eyebrow{gap:0}.eyebrow::before{display:none}
 .centered-head .eyebrow{width:100%;justify-content:center;text-align:center}
+.loss-list li::before{content:'↗';color:var(--lime)}
+.verdict-no{color:#006f61;background:#d9f8f1}.verdict-big.no{color:#00a889}

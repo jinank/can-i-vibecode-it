@@ -6,69 +6,70 @@ import { getVoteCounts } from '../lib/db';
 const apps = getApps();
 const counts = getVoteCounts();
 const ranked = apps.sort((a, b) => (counts[b.slug] || 0) - (counts[a.slug] || 0) || b.priceMonthly - a.priceMonthly);
-const destroyed = ranked.reduce((sum, app) => sum + app.priceMonthly * (counts[app.slug] || 0), 0);
+const buildPaths = ranked.reduce((sum, app) => sum + (1 + app.priorArt.length) * 3, 0);
+const launches = ranked.reduce((sum, app) => sum + (counts[app.slug] || 0), 0);
 const categories = [...new Set(apps.map((app) => app.category))].sort();
-const title = 'Rethinksoft | The Software Replacement Index';
-const description = 'Independent, practical guides for replacing paid software with focused custom tools built from one strong prompt.';
+const title = 'Rethinksoft | 100+ Agent Prompts and Open Source Codebases';
+const description = 'Ready to use AI agent prompts and proven open source codebases for building software products you can customize, launch, and sell.';
 const siteUrl = Astro.site!.toString().replace(/\/$/, '');
 const jsonLd = [
   { '@context': 'https://schema.org', '@type': 'WebSite', name: 'Rethinksoft', url: siteUrl, potentialAction: { '@type': 'SearchAction', target: `${siteUrl}/?q={search_term_string}`, 'query-input': 'required name=search_term_string' } },
-  { '@context': 'https://schema.org', '@type': 'ItemList', name: 'The Software Replacement Index', itemListElement: ranked.map((app, index) => ({ '@type': 'ListItem', position: index + 1, url: `${siteUrl}/${app.slug}`, name: app.name })) },
+  { '@context': 'https://schema.org', '@type': 'ItemList', name: 'Agent Prompts and Open Source Product Codebases', itemListElement: ranked.map((app, index) => ({ '@type': 'ListItem', position: index + 1, url: `${siteUrl}/${app.slug}`, name: app.name })) },
   { '@context': 'https://schema.org', '@type': 'Organization', name: 'Rethinksoft', url: siteUrl, logo: `${siteUrl}/favicon.svg` },
 ];
 const tape = [...ranked, ...ranked];
 ---
 <BaseLayout {title} {description} image="/og/home.png" {jsonLd}>
   <section class="hero container">
-    <p class="eyebrow">Independent software replacement index</p>
-    <h1>The ownership layer<br />for your <em>software stack.</em></h1>
-    <p class="hero-lede">Rethinksoft shows you which subscriptions can become focused tools you own, what the tradeoffs are, and the exact specification to build them.</p>
-    <div class="hero-actions"><a class="button" href="#death-list">Explore the index</a><a class="text-link" href="#how-it-works">See how it works ↓</a></div>
+    <p class="eyebrow">The product launch library</p>
+    <h1>Build software<br />people will <em>pay for.</em></h1>
+    <p class="hero-lede">Explore {buildPaths}+ ready to use build paths combining precise agent prompts with proven open source codebases. Customize the product, launch it, and make it yours.</p>
+    <div class="hero-actions"><a class="button" href="#death-list">Explore build ideas</a><a class="text-link" href="#how-it-works">See how it works ↓</a></div>
     <div class="search-shell">
       <label class="sr-only" for="app-search">Search apps</label>
-      <input class="hero-search" id="app-search" type="search" placeholder="Search products, categories, or workflows" autocomplete="off" />
+      <input class="hero-search" id="app-search" type="search" placeholder="Search product ideas, codebases, or categories" autocomplete="off" />
       <span class="search-key">⌘ K</span>
     </div>
     <div class="chips" aria-label="Filter by category">
       <button class="chip active" type="button" data-category="all">✳ ALL</button>
       {categories.map((category) => <button class="chip" type="button" data-category={category.toLowerCase()}>{categoryEmoji[category] || '◈'} {category.toUpperCase()}</button>)}
     </div>
-    <div class="trust-row"><span>Built for independent teams</span><b>{apps.length} products reviewed</b><b>No affiliate links</b><b>Open source</b></div>
+    <div class="trust-row"><span>Built for founders and makers</span><b>{buildPaths} launch paths</b><b>{apps.length} product blueprints</b><b>Open source first</b></div>
   </section>
 
-  <section class="blue-stage" aria-label="Rethinksoft replacement intelligence">
+  <section class="blue-stage" aria-label="Rethinksoft product launch library">
     <div class="stage-grid" aria-hidden="true"></div>
     <div class="stage-orbit orbit-one" aria-hidden="true"></div>
     <div class="stage-orbit orbit-two" aria-hidden="true"></div>
-    <div class="stage-card stage-left"><small>Notion</small><strong>KINDA</strong><span>Knowledge base</span></div>
-    <div class="stage-core"><span class="brand-mark">R</span><b>Rethinksoft</b><small>Replacement intelligence</small></div>
-    <div class="stage-card stage-right"><small>Trello</small><strong>YES</strong><span>Project boards</span></div>
+    <div class="stage-card stage-left"><small>Knowledge base</small><strong>PROMPT</strong><span>Ready for your agent</span></div>
+    <div class="stage-core"><span class="brand-mark">R</span><b>Rethinksoft</b><small>Build it. Own it. Sell it.</small></div>
+    <div class="stage-card stage-right"><small>Project boards</small><strong>SOURCE</strong><span>Open codebase</span></div>
   </section>
 
-  <section class="ticker" aria-label={`Collective monthly software cost eliminated: $${destroyed} per month`}>
+  <section class="ticker" aria-label={`${buildPaths} ready to use software build paths`}>
     <div class="ticker-top">
-      <div class="ticker-label">COLLECTIVE MONTHLY COST ELIMINATED</div>
-      <div class="odometer-wrap"><span>$</span><strong class="odometer" data-value={destroyed}>{destroyed.toLocaleString('en-US')}</strong><small>/ MO<br />AND COUNTING</small></div>
+      <div class="ticker-label">READY TO USE PRODUCT BUILD PATHS</div>
+      <div class="odometer-wrap"><strong class="odometer" data-value={buildPaths}>{buildPaths.toLocaleString('en-US')}</strong><span>+</span><small>PROMPTS AND CODE<br />{launches} BUILDER LAUNCHES</small></div>
     </div>
-    <div class="tape" aria-hidden="true"><div class="tape-track">{tape.map((app) => <span>{app.name.toUpperCase()} <b>−${app.priceMonthly}/MO</b> · {verdictCopy[app.verdict].short}</span>)}</div></div>
+    <div class="tape" aria-hidden="true"><div class="tape-track">{tape.map((app) => <span>{app.name.toUpperCase()} <b>PROMPT + SOURCE</b> · {app.category.toUpperCase()}</span>)}</div></div>
   </section>
 
   <section class="decision-section section container reveal">
-    <div class="section-head centered-head"><div><p class="eyebrow">Everything you need to decide</p><h2>Know what is worth replacing.</h2></div><p>Clear evidence, focused build plans, and the tradeoffs that usually get buried.</p></div>
+    <div class="section-head centered-head"><div><p class="eyebrow">Everything you need to launch</p><h2>Go from idea to owned product.</h2></div><p>Start with a focused specification, proven source code, and an honest view of what still needs work.</p></div>
     <div class="decision-grid">
-      <article class="decision-card featured"><span class="card-index">01</span><div class="mini-verdict"><i>YES</i><i>KINDA</i><i>NO</i></div><h3>Direct verdicts</h3><p>A clear answer for each product, based on the real complexity behind its core workflow.</p></article>
-      <article class="decision-card"><span class="card-index">02</span><div class="mini-code"><i></i><i></i><i></i><i></i></div><h3>Build specifications</h3><p>One focused prompt with enough product detail for a capable coding agent to execute.</p></article>
-      <article class="decision-card"><span class="card-index">03</span><div class="mini-loss"><i>×</i><span>Integrations</span><i>×</i><span>Scale</span><i>×</i><span>Support</span></div><h3>Honest tradeoffs</h3><p>Know what you give up before you move a critical workflow into something custom.</p></article>
+      <article class="decision-card featured"><span class="card-index">01</span><div class="mini-verdict"><i>IDEA</i><i>BUILD</i><i>SELL</i></div><h3>Proven product ideas</h3><p>Start from software categories with clear demand, familiar workflows, and real commercial potential.</p></article>
+      <article class="decision-card"><span class="card-index">02</span><div class="mini-code"><i></i><i></i><i></i><i></i></div><h3>Agent ready prompts</h3><p>Copy a focused product specification directly into Claude Code, Codex, or Cursor.</p></article>
+      <article class="decision-card"><span class="card-index">03</span><div class="mini-loss"><i>↗</i><span>Fork</span><i>↗</i><span>Customize</span><i>↗</i><span>Launch</span></div><h3>Open source foundations</h3><p>Study or fork proven codebases so you can move faster without starting from an empty repository.</p></article>
     </div>
   </section>
 
   <section class="section container reveal" id="death-list">
     <div class="section-head">
-      <div><p class="eyebrow">Verified by independent builders</p><h2>Replacement index</h2></div>
-      <p>Ranked by people who built and shipped their own replacement. Vote only when your subscription is genuinely gone.</p>
+      <div><p class="eyebrow">Curated for independent builders</p><h2>Product launch library</h2></div>
+      <p>Ranked by builders who turned a blueprint into working software. Pick an idea, inspect the source, and start building.</p>
     </div>
     <div class="table-shell">
-      <div class="list-header"><span>RANK</span><span>PRODUCT</span><span>CATEGORY</span><span>PRICE</span><span>VERDICT</span><span>VOTES</span></div>
+      <div class="list-header"><span>RANK</span><span>PRODUCT IDEA</span><span>CATEGORY</span><span>MARKET PRICE</span><span>SCOPE</span><span>BUILT</span></div>
       <div id="app-list">
         {ranked.map((app, index) => (
           <a class="app-row" href={`/${app.slug}`} data-name={`${app.name} ${app.domain}`.toLowerCase()} data-category={app.category.toLowerCase()}>
@@ -87,21 +88,21 @@ const tape = [...ranked, ...ranked];
 
   <section class="how-section section" id="how-it-works">
     <div class="container reveal">
-      <div class="section-head"><div><p class="eyebrow">A practical framework</p><h2>How it works.</h2></div><p>From expensive subscription to a focused tool you understand and control.</p></div>
+      <div class="section-head"><div><p class="eyebrow">A practical launch path</p><h2>How it works.</h2></div><p>From proven product idea to software you can customize, own, and sell.</p></div>
       <div class="how-grid">
-        <article class="how-card"><div class="how-visual visual-search"><span>⌕</span><i></i><i></i><i></i></div><small>01 / FIND</small><h3>Choose the product.</h3><p>Search the index and open the review for the subscription you want to reconsider.</p></article>
-        <article class="how-card"><div class="how-visual visual-decide"><span>YES</span><span>KINDA</span><span>NO</span></div><small>02 / DECIDE</small><h3>Read the evidence.</h3><p>Compare the verdict, the monthly cost, prior art, and the capabilities you would lose.</p></article>
-        <article class="how-card"><div class="how-visual visual-build"><i></i><i></i><i></i><b>→</b></div><small>03 / BUILD</small><h3>Ship the focused version.</h3><p>Copy the specification into your coding agent, review the result, and own the workflow.</p></article>
+        <article class="how-card"><div class="how-visual visual-search"><span>⌕</span><i></i><i></i><i></i></div><small>01 / DISCOVER</small><h3>Choose a product idea.</h3><p>Search by category, workflow, or market and open a blueprint that fits your skills and audience.</p></article>
+        <article class="how-card"><div class="how-visual visual-decide"><span>PROMPT</span><span>SOURCE</span><span>PLAN</span></div><small>02 / START</small><h3>Pick your foundation.</h3><p>Copy the agent prompt or study the linked open source codebases to understand the product deeply.</p></article>
+        <article class="how-card"><div class="how-visual visual-build"><i></i><i></i><i></i><b>→</b></div><small>03 / LAUNCH</small><h3>Make it worth paying for.</h3><p>Choose a niche, add your advantage, validate the hard parts, and ship a product that is distinctly yours.</p></article>
       </div>
     </div>
   </section>
 
   <section class="waitlist reveal" id="waitlist">
     <div class="container wait-card">
-      <div><p class="eyebrow">Request the next review</p><h2>What should we<br />rethink next?</h2></div>
-      <div><p>Join the quiet list for new reviews and build specifications. No campaigns. No sales funnel. Just useful research.</p>
+      <div><p class="eyebrow">Get the next blueprint</p><h2>What should we<br />build next?</h2></div>
+      <div><p>Join the quiet list for new prompts, codebase research, and practical launch ideas. No campaigns. No sales funnel. Just useful build material.</p>
         <form class="wait-form" id="waitlist-form"><input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" /><label class="sr-only" for="email">Email address</label><input id="email" name="email" type="email" placeholder="builder@localhost" required /><button class="button" type="submit">JOIN QUEUE ↗</button></form>
-        <p class="form-note" id="waitlist-note" aria-live="polite">One email when a new review is published.</p>
+        <p class="form-note" id="waitlist-note" aria-live="polite">One email when a new product blueprint is published.</p>
       </div>
     </div>
   </section>

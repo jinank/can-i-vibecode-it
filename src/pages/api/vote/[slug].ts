@@ -10,5 +10,5 @@ export const POST: APIRoute = async ({ params, clientAddress, request }) => {
   const ip = forwarded || clientAddress || 'unknown';
   const hash = createHash('sha256').update(`${process.env.IP_HASH_SALT || 'civi-public-salt-v1'}:${ip}`).digest('hex');
   const result = addVote(slug, hash);
-  return Response.json({ ...result, message: result.added ? 'Your replacement has been counted.' : 'A vote from this network is already counted.' }, { status: result.added ? 201 : 200 });
+  return Response.json({ ...result, message: result.added ? 'Your build has been counted.' : 'A build from this network is already counted.' }, { status: result.added ? 201 : 200 });
 };

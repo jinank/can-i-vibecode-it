@@ -1,12 +1,12 @@
-Build me a directory site called "Rethinksoft" that answers, per paid software product, whether you can replace it with one focused AI coding prompt.
+Build me a directory site called "Rethinksoft" with 100+ ready to use product build paths that combine AI agent prompts and proven open source codebases. The goal is to help founders choose a software idea, build their own focused version, customize it for a niche, and sell it.
 
 Stack: Astro (server output, node adapter) + better-sqlite3. No client framework: vanilla JS for interactions. Dev-tool aesthetic: JetBrains Mono + Space Grotesk, CRT-black dark mode (default) and a paper light mode, phosphor green as the only loud color.
 
-Each app is one JSON file in data/apps/: slug, name, domain, category, priceMonthly, verdict (yes|kinda|no), whatYouLose[], priorArt[], prompt, notes.
+Each product blueprint is one JSON file in data/apps/: slug, name, domain, category, priceMonthly as a market reference, verdict as build complexity, whatYouLose as the hard parts still to solve, priorArt as open source codebases, prompt, and notes.
 
-Homepage: hero search that live-filters, category chips with emoji, and "The Death List": apps ranked by "I replaced this" votes, each row: favicon, name, category, price, verdict badge, vote count. Add a loud stock-style "COLLECTIVE MRR DESTROYED: $X/mo" ticker, computed from price times votes, with rolling digits and a scrolling tape of app prices.
+Homepage: hero search that live filters, category chips with emoji, and a product launch library ranked by "I built this" counts. Each row includes the familiar product reference, category, market price, build scope, and launch count. Add a loud stock style ticker showing the number of agent prompt and open source build paths with rolling digits and a scrolling tape of product ideas.
 
-App pages at /:slug: big verdict, one-shot build prompt with agent-specific copy buttons for Claude Code, Codex, and Cursor; honest loss list; prior-art links; three related apps; a SQLite-backed, IP-rate-limited vote; share-on-X; and a four-question FAQ.
+Blueprint pages at /:slug: recommended build scope, an agent ready product prompt with copy buttons for Claude Code, Codex, and Cursor, hard parts to solve, open source codebase links, three related ideas, a SQLite backed and IP rate limited "I built this" action, share on X, and a four question FAQ. Make it clear that builders must review open source licenses and create their own branding and product advantage before selling.
 
 Server-render everything. Add question-format titles, canonical URLs, JSON-LD for WebSite, SearchAction, ItemList, FAQPage, BreadcrumbList, and Organization; sitemap.xml, robots.txt, and per-page OG images generated at build time with satori and resvg.
 

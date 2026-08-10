@@ -1,6 +1,6 @@
 # Rethinksoft
 
-An independent, server-rendered directory for evaluating whether one strong build specification can replace a paid software subscription.
+A server-rendered product launch library with ready to use AI agent prompts and proven open source codebases for software founders and independent builders.
 
 ## Local development
 
