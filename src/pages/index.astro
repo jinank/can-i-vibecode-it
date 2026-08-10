@@ -20,12 +20,11 @@ const tape = [...ranked, ...ranked];
 ---
 <BaseLayout {title} {description} image="/og/home.png" {jsonLd}>
   <section class="hero container">
+    <div class="hero-badge"><span></span> New replacement blueprints added</div>
     <p class="eyebrow">Independent software replacement index</p>
-    <h1>Own the tools<br /><em>you depend on.</em></h1>
-    <div class="hero-copy">
-      <p>Before adding another subscription, find out whether a focused custom tool can deliver the part of the product you actually use.</p>
-      <div class="hero-stat"><strong>{apps.length}</strong><span>PRODUCTS REVIEWED<br />ZERO AFFILIATE LINKS</span></div>
-    </div>
+    <h1>The ownership layer<br />for your <em>software stack.</em></h1>
+    <p class="hero-lede">Rethinksoft shows you which subscriptions can become focused tools you own, what the tradeoffs are, and the exact specification to build them.</p>
+    <div class="hero-actions"><a class="button" href="#death-list">Explore the index</a><a class="text-link" href="#how-it-works">See how it works ↓</a></div>
     <div class="search-shell">
       <label class="sr-only" for="app-search">Search apps</label>
       <input class="hero-search" id="app-search" type="search" placeholder="Search products, categories, or workflows" autocomplete="off" />
@@ -35,14 +34,33 @@ const tape = [...ranked, ...ranked];
       <button class="chip active" type="button" data-category="all">✳ ALL</button>
       {categories.map((category) => <button class="chip" type="button" data-category={category.toLowerCase()}>{categoryEmoji[category] || '◈'} {category.toUpperCase()}</button>)}
     </div>
+    <div class="trust-row"><span>Built for independent teams</span><b>{apps.length} products reviewed</b><b>No affiliate links</b><b>Open source</b></div>
   </section>
 
-  <section class="ticker" aria-label={`Collective monthly recurring revenue destroyed: $${destroyed} per month`}>
+  <section class="blue-stage" aria-label="Rethinksoft replacement intelligence">
+    <div class="stage-grid" aria-hidden="true"></div>
+    <div class="stage-orbit orbit-one" aria-hidden="true"></div>
+    <div class="stage-orbit orbit-two" aria-hidden="true"></div>
+    <div class="stage-card stage-left"><small>Notion</small><strong>KINDA</strong><span>Knowledge base</span></div>
+    <div class="stage-core"><span class="brand-mark">R</span><b>Rethinksoft</b><small>Replacement intelligence</small></div>
+    <div class="stage-card stage-right"><small>Trello</small><strong>YES</strong><span>Project boards</span></div>
+  </section>
+
+  <section class="ticker" aria-label={`Collective monthly software cost eliminated: $${destroyed} per month`}>
     <div class="ticker-top">
       <div class="ticker-label">COLLECTIVE MONTHLY COST ELIMINATED</div>
       <div class="odometer-wrap"><span>$</span><strong class="odometer" data-value={destroyed}>{destroyed.toLocaleString('en-US')}</strong><small>/ MO<br />AND COUNTING</small></div>
     </div>
     <div class="tape" aria-hidden="true"><div class="tape-track">{tape.map((app) => <span>{app.name.toUpperCase()} <b>−${app.priceMonthly}/MO</b> · {verdictCopy[app.verdict].short}</span>)}</div></div>
+  </section>
+
+  <section class="decision-section section container reveal">
+    <div class="section-head centered-head"><div><p class="eyebrow">Everything you need to decide</p><h2>Know what is worth replacing.</h2></div><p>Clear evidence, focused build plans, and the tradeoffs that usually get buried.</p></div>
+    <div class="decision-grid">
+      <article class="decision-card featured"><span class="card-index">01</span><div class="mini-verdict"><i>YES</i><i>KINDA</i><i>NO</i></div><h3>Direct verdicts</h3><p>A clear answer for each product, based on the real complexity behind its core workflow.</p></article>
+      <article class="decision-card"><span class="card-index">02</span><div class="mini-code"><i></i><i></i><i></i><i></i></div><h3>Build specifications</h3><p>One focused prompt with enough product detail for a capable coding agent to execute.</p></article>
+      <article class="decision-card"><span class="card-index">03</span><div class="mini-loss"><i>×</i><span>Integrations</span><i>×</i><span>Scale</span><i>×</i><span>Support</span></div><h3>Honest tradeoffs</h3><p>Know what you give up before you move a critical workflow into something custom.</p></article>
+    </div>
   </section>
 
   <section class="section container reveal" id="death-list">
@@ -65,6 +83,17 @@ const tape = [...ranked, ...ranked];
         ))}
       </div>
       <div class="empty-state" id="empty-state">No matching products found.</div>
+    </div>
+  </section>
+
+  <section class="how-section section" id="how-it-works">
+    <div class="container reveal">
+      <div class="section-head"><div><p class="eyebrow">A practical framework</p><h2>How it works.</h2></div><p>From expensive subscription to a focused tool you understand and control.</p></div>
+      <div class="how-grid">
+        <article class="how-card"><div class="how-visual visual-search"><span>⌕</span><i></i><i></i><i></i></div><small>01 / FIND</small><h3>Choose the product.</h3><p>Search the index and open the review for the subscription you want to reconsider.</p></article>
+        <article class="how-card"><div class="how-visual visual-decide"><span>YES</span><span>KINDA</span><span>NO</span></div><small>02 / DECIDE</small><h3>Read the evidence.</h3><p>Compare the verdict, the monthly cost, prior art, and the capabilities you would lose.</p></article>
+        <article class="how-card"><div class="how-visual visual-build"><i></i><i></i><i></i><b>→</b></div><small>03 / BUILD</small><h3>Ship the focused version.</h3><p>Copy the specification into your coding agent, review the result, and own the workflow.</p></article>
+      </div>
     </div>
   </section>
 

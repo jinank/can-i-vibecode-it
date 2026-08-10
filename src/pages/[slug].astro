@@ -58,7 +58,7 @@ const jsonLd = [
       <section class="block faq reveal"><div class="block-head"><div><p class="eyebrow">Before you cancel</p><h2>FAQ</h2></div></div>{faqs.map((item) => <details><summary>{item.q}</summary><p>{item.a}</p></details>)}</section>
     </article>
     <aside>
-      <div class="side-card"><p class="eyebrow">Proof, not vibes</p><h3>DID YOU REPLACE IT?</h3><p>Only press this if your replacement is running and the subscription is actually gone.</p><button class="button vote-button" type="button" data-vote={app.slug}>▲ I REPLACED THIS · <span>{counts[app.slug] || 0}</span></button><button class="button secondary share-button" type="button" data-share data-url={url} data-text={`Can you replace ${app.name} with one AI coding prompt? ${verdict.short}.`}>𝕏 SHARE THE VERDICT</button><p class="form-note" data-vote-note aria-live="polite">ONE VOTE PER NETWORK.</p></div>
+      <div class="side-card"><p class="eyebrow">Verified replacement</p><h3>DID YOU REPLACE IT?</h3><p>Only press this if your replacement is running and the subscription is actually gone.</p><button class="button vote-button" type="button" data-vote={app.slug}>▲ I REPLACED THIS · <span>{counts[app.slug] || 0}</span></button><button class="button secondary share-button" type="button" data-share data-url={url} data-text={`Can you replace ${app.name} with one AI coding prompt? ${verdict.short}.`}>𝕏 SHARE THE VERDICT</button><p class="form-note" data-vote-note aria-live="polite">ONE VOTE PER NETWORK.</p></div>
     </aside>
   </div>
 </BaseLayout>

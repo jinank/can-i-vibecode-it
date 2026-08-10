@@ -32,6 +32,6 @@ async function render(name, eyebrow, title, accent, footer) {
   fs.writeFileSync(path.join(out, name), new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } }).render().asPng());
 }
 
-await render('home.png', 'INDEPENDENT SOFTWARE RESEARCH', 'OWN THE TOOLS YOU DEPEND ON.', '#548400', `${apps.length} PRODUCTS REVIEWED · ZERO AFFILIATE LINKS`);
+await render('home.png', 'INDEPENDENT SOFTWARE RESEARCH', 'THE OWNERSHIP LAYER FOR YOUR SOFTWARE STACK.', '#0868ff', `${apps.length} PRODUCTS REVIEWED · ZERO AFFILIATE LINKS`);
 for (const app of apps) await render(`${app.slug}.png`, `CAN I REPLACE ${app.name.toUpperCase()}?`, verdicts[app.verdict], colors[app.verdict], `${app.name.toUpperCase()} · $${app.priceMonthly}/MO · HONEST VERDICT`);
 console.log(`Generated ${apps.length + 1} Open Graph images.`);
