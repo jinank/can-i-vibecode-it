@@ -36,7 +36,7 @@ export const categoryEmoji: Record<string, string> = {
 };
 
 export const verdictCopy = {
-  yes: { short: 'YES', label: 'Yes — absolutely', kicker: 'CANCEL IT' },
-  kinda: { short: 'KINDA', label: 'Kinda — with caveats', kicker: 'PROBABLY' },
+  yes: { short: 'YES', label: 'Yes, absolutely', kicker: 'REPLACE IT' },
+  kinda: { short: 'KINDA', label: 'Kinda, with caveats', kicker: 'POSSIBLY' },
   no: { short: 'NOT REALLY', label: 'Not really', kicker: 'KEEP PAYING' },
 } as const;

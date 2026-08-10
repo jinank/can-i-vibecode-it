@@ -8,27 +8,27 @@ const counts = getVoteCounts();
 const ranked = apps.sort((a, b) => (counts[b.slug] || 0) - (counts[a.slug] || 0) || b.priceMonthly - a.priceMonthly);
 const destroyed = ranked.reduce((sum, app) => sum + app.priceMonthly * (counts[app.slug] || 0), 0);
 const categories = [...new Set(apps.map((app) => app.category))].sort();
-const title = 'Can I Vibecode It? Replace SaaS with One AI Coding Prompt';
-const description = 'An honest directory of paid SaaS apps you can — and cannot — replace with one excellent AI coding prompt.';
+const title = 'Rethinksoft | The Software Replacement Index';
+const description = 'Independent, practical guides for replacing paid software with focused custom tools built from one strong prompt.';
 const siteUrl = Astro.site!.toString().replace(/\/$/, '');
 const jsonLd = [
-  { '@context': 'https://schema.org', '@type': 'WebSite', name: 'Can I Vibecode It?', url: siteUrl, potentialAction: { '@type': 'SearchAction', target: `${siteUrl}/?q={search_term_string}`, 'query-input': 'required name=search_term_string' } },
-  { '@context': 'https://schema.org', '@type': 'ItemList', name: 'The SaaS Death List', itemListElement: ranked.map((app, index) => ({ '@type': 'ListItem', position: index + 1, url: `${siteUrl}/${app.slug}`, name: app.name })) },
-  { '@context': 'https://schema.org', '@type': 'Organization', name: 'Can I Vibecode It?', url: siteUrl, logo: `${siteUrl}/favicon.svg` },
+  { '@context': 'https://schema.org', '@type': 'WebSite', name: 'Rethinksoft', url: siteUrl, potentialAction: { '@type': 'SearchAction', target: `${siteUrl}/?q={search_term_string}`, 'query-input': 'required name=search_term_string' } },
+  { '@context': 'https://schema.org', '@type': 'ItemList', name: 'The Software Replacement Index', itemListElement: ranked.map((app, index) => ({ '@type': 'ListItem', position: index + 1, url: `${siteUrl}/${app.slug}`, name: app.name })) },
+  { '@context': 'https://schema.org', '@type': 'Organization', name: 'Rethinksoft', url: siteUrl, logo: `${siteUrl}/favicon.svg` },
 ];
 const tape = [...ranked, ...ranked];
 ---
 <BaseLayout {title} {description} image="/og/home.png" {jsonLd}>
   <section class="hero container">
-    <p class="eyebrow">The anti-SaaS field guide / build 001</p>
-    <h1>CAN I <em>VIBECODE</em><br />IT?</h1>
+    <p class="eyebrow">Independent software replacement index</p>
+    <h1>Own the tools<br /><em>you depend on.</em></h1>
     <div class="hero-copy">
-      <p>Before you add another $29/month to the pile, ask the obvious question: could one brutally specific prompt build the 80% you actually use?</p>
-      <div class="hero-stat"><strong>{apps.length}</strong><span>SAAS APPS AUDITED<br />ZERO AFFILIATE LINKS</span></div>
+      <p>Before adding another subscription, find out whether a focused custom tool can deliver the part of the product you actually use.</p>
+      <div class="hero-stat"><strong>{apps.length}</strong><span>PRODUCTS REVIEWED<br />ZERO AFFILIATE LINKS</span></div>
     </div>
     <div class="search-shell">
       <label class="sr-only" for="app-search">Search apps</label>
-      <input class="hero-search" id="app-search" type="search" placeholder="Search an app, category, or expensive habit..." autocomplete="off" />
+      <input class="hero-search" id="app-search" type="search" placeholder="Search products, categories, or workflows" autocomplete="off" />
       <span class="search-key">⌘ K</span>
     </div>
     <div class="chips" aria-label="Filter by category">
@@ -39,7 +39,7 @@ const tape = [...ranked, ...ranked];
 
   <section class="ticker" aria-label={`Collective monthly recurring revenue destroyed: $${destroyed} per month`}>
     <div class="ticker-top">
-      <div class="ticker-label">COLLECTIVE MRR DESTROYED</div>
+      <div class="ticker-label">COLLECTIVE MONTHLY COST ELIMINATED</div>
       <div class="odometer-wrap"><span>$</span><strong class="odometer" data-value={destroyed}>{destroyed.toLocaleString('en-US')}</strong><small>/ MO<br />AND COUNTING</small></div>
     </div>
     <div class="tape" aria-hidden="true"><div class="tape-track">{tape.map((app) => <span>{app.name.toUpperCase()} <b>−${app.priceMonthly}/MO</b> · {verdictCopy[app.verdict].short}</span>)}</div></div>
@@ -47,11 +47,11 @@ const tape = [...ranked, ...ranked];
 
   <section class="section container reveal" id="death-list">
     <div class="section-head">
-      <div><p class="eyebrow">Community kill count</p><h2>THE DEATH LIST</h2></div>
-      <p>Ranked by builders who actually replaced the subscription. Upvote only if you shipped the replacement.</p>
+      <div><p class="eyebrow">Verified by independent builders</p><h2>Replacement index</h2></div>
+      <p>Ranked by people who built and shipped their own replacement. Vote only when your subscription is genuinely gone.</p>
     </div>
     <div class="table-shell">
-      <div class="list-header"><span>RANK</span><span>APP</span><span>CATEGORY</span><span>PRICE</span><span>VERDICT</span><span>KILLS</span></div>
+      <div class="list-header"><span>RANK</span><span>PRODUCT</span><span>CATEGORY</span><span>PRICE</span><span>VERDICT</span><span>VOTES</span></div>
       <div id="app-list">
         {ranked.map((app, index) => (
           <a class="app-row" href={`/${app.slug}`} data-name={`${app.name} ${app.domain}`.toLowerCase()} data-category={app.category.toLowerCase()}>
@@ -64,16 +64,16 @@ const tape = [...ranked, ...ranked];
           </a>
         ))}
       </div>
-      <div class="empty-state" id="empty-state">NO MATCHES. MAYBE YOU ALREADY VIBECODED IT.</div>
+      <div class="empty-state" id="empty-state">No matching products found.</div>
     </div>
   </section>
 
   <section class="waitlist reveal" id="waitlist">
     <div class="container wait-card">
-      <div><p class="eyebrow">Request the next teardown</p><h2>WHAT SHOULD<br />WE KILL NEXT?</h2></div>
-      <div><p>Join the quiet list for new audits and prompts. No drip campaign. No “quick question.” Just useful replacements.</p>
+      <div><p class="eyebrow">Request the next review</p><h2>What should we<br />rethink next?</h2></div>
+      <div><p>Join the quiet list for new reviews and build specifications. No campaigns. No sales funnel. Just useful research.</p>
         <form class="wait-form" id="waitlist-form"><input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" /><label class="sr-only" for="email">Email address</label><input id="email" name="email" type="email" placeholder="builder@localhost" required /><button class="button" type="submit">JOIN QUEUE ↗</button></form>
-        <p class="form-note" id="waitlist-note" aria-live="polite">ONE EMAIL WHEN SOMETHING DIES.</p>
+        <p class="form-note" id="waitlist-note" aria-live="polite">One email when a new review is published.</p>
       </div>
     </div>
   </section>

@@ -1,15 +1,4 @@
 (() => {
-  const root = document.documentElement;
-  const themeButton = document.querySelector('.theme-toggle');
-  const themeLabel = document.querySelector('.theme-label');
-  const setThemeLabel = () => { if (themeLabel) themeLabel.textContent = root.dataset.theme === 'light' ? 'CRT' : 'PAPER'; };
-  setThemeLabel();
-  themeButton?.addEventListener('click', () => {
-    root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light';
-    localStorage.setItem('civi-theme', root.dataset.theme);
-    setThemeLabel();
-  });
-
   const search = document.querySelector('#app-search');
   const rows = [...document.querySelectorAll('.app-row')];
   const chips = [...document.querySelectorAll('.chip')];
@@ -82,7 +71,7 @@
     try {
       await navigator.clipboard.writeText(agentPrefixes[button.dataset.agent] + button.dataset.prompt);
       button.textContent = '✓ COPIED TO CLIPBOARD'; button.classList.add('copied');
-    } catch { button.textContent = 'COPY FAILED — SELECT PROMPT'; }
+    } catch { button.textContent = 'COPY FAILED. SELECT PROMPT'; }
     setTimeout(() => { button.textContent = original; button.classList.remove('copied'); }, 1800);
   }));
 
@@ -96,7 +85,7 @@
       voteButton.querySelector('span').textContent = data.count;
       note.textContent = data.message;
       voteButton.classList.toggle('voted', data.added);
-    } catch { note.textContent = 'VOTE FAILED. THE SAAS LIVES ANOTHER DAY.'; }
+    } catch { note.textContent = 'The vote could not be saved. Please try again.'; }
     finally { voteButton.disabled = false; }
   });
 

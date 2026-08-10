@@ -1,6 +1,6 @@
-# Can I Vibecode It?
+# Rethinksoft
 
-An honest, server-rendered directory that asks whether one excellent AI coding prompt can replace a paid SaaS subscription.
+An independent, server-rendered directory for evaluating whether one strong build specification can replace a paid software subscription.
 
 ## Local development
 
