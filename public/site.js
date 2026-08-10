@@ -1,4 +1,28 @@
 (() => {
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const updateScrollProgress = () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    document.documentElement.style.setProperty('--scroll-progress', max > 0 ? Math.min(100, scrollY / max * 100) : 0);
+  };
+  updateScrollProgress();
+  addEventListener('scroll', updateScrollProgress, { passive: true });
+
+  if (!reducedMotion) {
+    document.documentElement.classList.add('motion-ready');
+    document.querySelectorAll('.blue-stage, .decision-card, .how-card').forEach((surface) => {
+      surface.addEventListener('pointermove', (event) => {
+        const rect = surface.getBoundingClientRect();
+        surface.style.setProperty('--mx', `${(event.clientX - rect.left) / rect.width * 100}%`);
+        surface.style.setProperty('--my', `${(event.clientY - rect.top) / rect.height * 100}%`);
+      });
+    });
+    const motionItems = [...document.querySelectorAll('.decision-card, .how-card')];
+    const motionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => { if (entry.isIntersecting) { entry.target.classList.add('is-in'); motionObserver.unobserve(entry.target); } });
+    }, { threshold: 0.16 });
+    motionItems.forEach((item, index) => { item.style.setProperty('--delay', `${index % 3 * 90}ms`); motionObserver.observe(item); });
+  }
+
   const search = document.querySelector('#app-search');
   const rows = [...document.querySelectorAll('.app-row')];
   const chips = [...document.querySelectorAll('.chip')];
@@ -29,7 +53,7 @@
   if (search && params.get('q')) { search.value = params.get('q'); filter(); }
 
   const odometer = document.querySelector('.odometer');
-  if (odometer && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (odometer && !reducedMotion) {
     const target = Number(odometer.dataset.value || 0);
     const started = performance.now();
     const roll = (now) => {
@@ -51,7 +75,7 @@
     event.preventDefault();
     const button = waitlist.querySelector('button');
     const note = document.querySelector('#waitlist-note');
-    button.disabled = true; button.textContent = 'TRANSMITTING...';
+    button.disabled = true; button.textContent = 'TRANSMITTING…';
     try {
       const response = await fetch('/api/waitlist', { method: 'POST', body: new FormData(waitlist) });
       const data = await response.json();
