@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { categoryEmoji, getApp, getApps, verdictCopy } from '../lib/apps';
+import { getVoteCounts } from '../lib/db';
+
+const app = getApp(Astro.params.slug || '');
+if (!app) return Astro.redirect('/404');
+const allApps = getApps();
+const counts = getVoteCounts();
+const related = allApps.filter((item) => item.slug !== app.slug).sort((a, b) => Number(b.category === app.category) - Number(a.category === app.category)).slice(0, 3);
+const verdict = verdictCopy[app.verdict];
+const title = `Can I Vibecode ${app.name}? ${verdict.short} — Here’s the Prompt`;
+const description = `${verdict.label}. See the honest tradeoffs and copy a one-shot AI coding prompt to build your own ${app.name} alternative.`;
+const siteUrl = Astro.site!.toString().replace(/\/$/, '');
+const url = `${siteUrl}/${app.slug}`;
+const faqs = [
+  { q: `Can I really replace ${app.name} with one prompt?`, a: app.verdict === 'yes' ? `For the core workflow, yes. The prompt above is scoped to the valuable part most small teams use.` : app.verdict === 'kinda' ? `You can replace the focused core, but expect manual work around integrations, scale, or polish.` : `Not safely as a full replacement. You can prototype the workflow, but the difficult operational guarantees are the product.` },
+  { q: 'Which AI coding agent should I use?', a: 'Use the agent that can inspect files, run commands, and iterate on errors. Claude Code, Codex, and Cursor are all suitable; the copy buttons add tailored instructions.' },
+  { q: 'How much will hosting cost?', a: 'A small single-team replacement often fits on an inexpensive server. Storage, email, video, AI APIs, and high traffic can raise the cost.' },
+  { q: 'Is the generated app production-ready?', a: 'Treat one-shot output as a strong first build, not a security or compliance guarantee. Review authentication, backups, privacy, accessibility, and failure modes before relying on it.' },
+];
+const jsonLd = [
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((item) => ({ '@type': 'Question', name: item.q, acceptedAnswer: { '@type': 'Answer', text: item.a } })) },
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
+    { '@type': 'ListItem', position: 2, name: app.category, item: `${siteUrl}/#death-list` },
+    { '@type': 'ListItem', position: 3, name: app.name, item: url },
+  ] },
+];
+---
+<BaseLayout {title} {description} image={`/og/${app.slug}.png`} {jsonLd}>
+  <div class="container crumbs"><a href="/">HOME</a> / <a href="/#death-list">{app.category.toUpperCase()}</a> / <span>{app.name.toUpperCase()}</span></div>
+  <section class="detail-hero">
+    <div class="container">
+      <div class="detail-top">
+        <div><div class="detail-brand"><img class="favicon" src={`https://${app.domain}/favicon.ico`} alt="" /><div><p class="eyebrow">SaaS teardown #{String(allApps.findIndex((item) => item.slug === app.slug) + 1).padStart(3, '0')}</p><span>{app.domain} · ${app.priceMonthly}/month</span></div></div><h1>{app.name}</h1></div>
+        <div class="verdict-display"><p class="eyebrow">Can you vibecode it?</p><div class:list={["verdict-big", app.verdict]}>{verdict.kicker}</div></div>
+      </div>
+      <div class="detail-summary"><p>{app.notes}</p><div class="metric-box"><div class="metric"><strong>${app.priceMonthly}</strong><span>MONTHLY RENT</span></div><div class="metric"><strong>{counts[app.slug] || 0}</strong><span>CONFIRMED KILLS</span></div></div></div>
+    </div>
+  </section>
+
+  <div class="container detail-grid">
+    <article>
+      <section class="block reveal" id="prompt"><div class="block-head"><div><p class="eyebrow">The one-shot</p><h2>BUILD PROMPT</h2></div><p>TESTED FOR AGENTIC CODING</p></div>
+        <div class="code-wrap"><div class="code-toolbar"><span class="dots"><i></i><i></i><i></i></span><span>{app.slug}-replacement.prompt</span><span>UTF-8</span></div><pre id="build-prompt">{app.prompt}</pre></div>
+        <div class="agent-buttons">
+          <button class="copy-button" type="button" data-agent="claude" data-prompt={app.prompt}>⌁ COPY FOR CLAUDE CODE</button>
+          <button class="copy-button" type="button" data-agent="codex" data-prompt={app.prompt}>⌁ COPY FOR CODEX</button>
+          <button class="copy-button" type="button" data-agent="cursor" data-prompt={app.prompt}>⌁ COPY FOR CURSOR</button>
+        </div>
+      </section>
+
+      <section class="block reveal"><div class="block-head"><div><p class="eyebrow">The honest bit</p><h2>WHAT YOU LOSE</h2></div></div><ul class="loss-list">{app.whatYouLose.map((loss) => <li>{loss}</li>)}</ul></section>
+      <section class="block reveal"><div class="block-head"><div><p class="eyebrow">Reality check</p><h2>THE CAVEAT</h2></div></div><p class="notes">{app.notes}</p></section>
+      <section class="block reveal"><div class="block-head"><div><p class="eyebrow">Don't start from zero</p><h2>PRIOR ART</h2></div></div><div class="prior-links">{app.priorArt.map((item) => <a href={item.url} target="_blank" rel="noopener"><span>{item.title}</span><span>OPEN SOURCE ↗</span></a>)}</div></section>
+      <section class="block reveal"><div class="block-head"><div><p class="eyebrow">Same energy</p><h2>RELATED KILLS</h2></div></div><div class="related-grid">{related.map((item) => <a class="related" href={`/${item.slug}`}><img class="favicon" src={`https://${item.domain}/favicon.ico`} alt="" /><h3>{item.name}</h3><p>{categoryEmoji[item.category]} {item.category} · ${item.priceMonthly}/mo</p><span class:list={["verdict", `verdict-${item.verdict}`]}>{verdictCopy[item.verdict].short}</span></a>)}</div></section>
+      <section class="block faq reveal"><div class="block-head"><div><p class="eyebrow">Before you cancel</p><h2>FAQ</h2></div></div>{faqs.map((item) => <details><summary>{item.q}</summary><p>{item.a}</p></details>)}</section>
+    </article>
+    <aside>
+      <div class="side-card"><p class="eyebrow">Proof, not vibes</p><h3>DID YOU REPLACE IT?</h3><p>Only press this if your replacement is running and the subscription is actually gone.</p><button class="button vote-button" type="button" data-vote={app.slug}>▲ I REPLACED THIS · <span>{counts[app.slug] || 0}</span></button><button class="button secondary share-button" type="button" data-share data-url={url} data-text={`Can you replace ${app.name} with one AI coding prompt? ${verdict.short}.`}>𝕏 SHARE THE VERDICT</button><p class="form-note" data-vote-note aria-live="polite">ONE VOTE PER NETWORK.</p></div>
+    </aside>
+  </div>
+</BaseLayout>

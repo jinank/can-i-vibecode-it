@@ -1,0 +1,64 @@
+---
+import '@fontsource/jetbrains-mono/400.css';
+import '@fontsource/jetbrains-mono/600.css';
+import '@fontsource/space-grotesk/500.css';
+import '@fontsource/space-grotesk/700.css';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+}
+const { title, description, image = '/og/home.png', jsonLd } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const imageUrl = new URL(image, Astro.site);
+---
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#090b09" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <title>{title}</title>
+    {jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    <script is:inline>
+      const saved = localStorage.getItem('civi-theme');
+      if (saved) document.documentElement.dataset.theme = saved;
+    </script>
+  </head>
+  <body>
+    <div class="scanlines" aria-hidden="true"></div>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Can I Vibecode It? home"><span class="prompt-mark">&gt;_</span> CAN I VIBECODE IT?</a>
+      <nav aria-label="Primary navigation">
+        <a href="/#death-list">DEATH_LIST</a>
+        <a href="/#waitlist">SUBMIT_APP</a>
+        <button class="theme-toggle" type="button" aria-label="Switch color theme"><span aria-hidden="true">◐</span> <span class="theme-label">PAPER</span></button>
+      </nav>
+    </header>
+    <main><slot /></main>
+    <footer class="site-footer reveal">
+      <div class="footer-grid">
+        <div><a class="brand" href="/"><span class="prompt-mark">&gt;_</span> CAN I VIBECODE IT?</a><p>Honest prompts for replacing rentware.<br />No hype. No accounts. No tracking pixels.</p></div>
+        <div><p class="eyebrow">SOURCE</p><a href="/rebuild-prompt.txt">Rebuild this site ↗</a><a href="https://github.com/" rel="noopener">MIT licensed ↗</a></div>
+        <div><p class="eyebrow">SIGNAL</p><p>First-party, aggregate analytics only.<br />Made for builders, not funnels.</p></div>
+      </div>
+      <div class="footer-line"><span>© 2026 CAN I VIBECODE IT?</span><span>STATUS: <i></i> ALL SYSTEMS VIBING</span></div>
+    </footer>
+    <script is:inline src="/site.js"></script>
+  </body>
+</html>

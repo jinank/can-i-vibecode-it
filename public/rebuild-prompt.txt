@@ -1,0 +1,13 @@
+Build me a directory site called "Can I Vibecode It?" that answers, per paid SaaS app, whether you can replace it with one AI coding prompt.
+
+Stack: Astro (server output, node adapter) + better-sqlite3. No client framework: vanilla JS for interactions. Dev-tool aesthetic: JetBrains Mono + Space Grotesk, CRT-black dark mode (default) and a paper light mode, phosphor green as the only loud color.
+
+Each app is one JSON file in data/apps/: slug, name, domain, category, priceMonthly, verdict (yes|kinda|no), whatYouLose[], priorArt[], prompt, notes.
+
+Homepage: hero search that live-filters, category chips with emoji, and "The Death List": apps ranked by "I replaced this" votes, each row: favicon, name, category, price, verdict badge, vote count. Add a loud stock-style "COLLECTIVE MRR DESTROYED: $X/mo" ticker, computed from price times votes, with rolling digits and a scrolling tape of app prices.
+
+App pages at /:slug: big verdict, one-shot build prompt with agent-specific copy buttons for Claude Code, Codex, and Cursor; honest loss list; prior-art links; three related apps; a SQLite-backed, IP-rate-limited vote; share-on-X; and a four-question FAQ.
+
+Server-render everything. Add question-format titles, canonical URLs, JSON-LD for WebSite, SearchAction, ItemList, FAQPage, BreadcrumbList, and Organization; sitemap.xml, robots.txt, and per-page OG images generated at build time with satori and resvg.
+
+Add a SQLite waitlist with honeypot and dedupe. Link to this prompt in the footer. Use tasteful micro-animations and respect prefers-reduced-motion. MIT license. Public repo. No accounts, payments, or third-party tracking.

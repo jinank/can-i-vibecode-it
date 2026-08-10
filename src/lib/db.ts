@@ -1,0 +1,41 @@
+import Database from 'better-sqlite3';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const dbPath = path.resolve(process.env.DATABASE_PATH || './data/site.db');
+fs.mkdirSync(path.dirname(dbPath), { recursive: true });
+
+const db = new Database(dbPath);
+db.pragma('journal_mode = WAL');
+db.pragma('foreign_keys = ON');
+db.exec(`
+  CREATE TABLE IF NOT EXISTS votes (
+    app_slug TEXT NOT NULL,
+    ip_hash TEXT NOT NULL,
+    created_at INTEGER NOT NULL DEFAULT (unixepoch()),
+    PRIMARY KEY (app_slug, ip_hash)
+  );
+  CREATE INDEX IF NOT EXISTS idx_votes_app_slug ON votes(app_slug);
+  CREATE TABLE IF NOT EXISTS waitlist (
+    id INTEGER PRIMARY KEY,
+    email TEXT NOT NULL COLLATE NOCASE UNIQUE,
+    created_at INTEGER NOT NULL DEFAULT (unixepoch())
+  );
+`);
+db.pragma('optimize');
+
+export function getVoteCounts(): Record<string, number> {
+  const rows = db.prepare('SELECT app_slug, COUNT(*) AS count FROM votes GROUP BY app_slug').all() as { app_slug: string; count: number }[];
+  return Object.fromEntries(rows.map((row) => [row.app_slug, row.count]));
+}
+
+export function addVote(appSlug: string, ipHash: string) {
+  const result = db.prepare('INSERT OR IGNORE INTO votes (app_slug, ip_hash) VALUES (?, ?)').run(appSlug, ipHash);
+  const row = db.prepare('SELECT COUNT(*) AS count FROM votes WHERE app_slug = ?').get(appSlug) as { count: number };
+  return { added: result.changes > 0, count: row.count };
+}
+
+export function addWaitlistEmail(email: string) {
+  const result = db.prepare('INSERT OR IGNORE INTO waitlist (email) VALUES (?)').run(email.trim().toLowerCase());
+  return result.changes > 0;
+}

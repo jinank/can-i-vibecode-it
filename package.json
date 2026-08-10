@@ -1,0 +1,26 @@
+{
+  "name": "can-i-vibecode-it",
+  "version": "1.0.0",
+  "private": false,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "node scripts/generate-og.mjs && astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/node": "latest",
+    "@fontsource/jetbrains-mono": "latest",
+    "@fontsource/space-grotesk": "latest",
+    "@resvg/resvg-js": "latest",
+    "astro": "latest",
+    "better-sqlite3": "latest",
+    "satori": "latest"
+  },
+  "devDependencies": {
+    "@astrojs/check": "latest",
+    "@types/node": "latest",
+    "typescript": "latest"
+  }
+}
